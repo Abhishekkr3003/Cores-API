@@ -1,1 +1,1 @@
-web: gunicorn -w 4 'app:create_app()'
+web: gunicorn --bind 0.0.0.0:5000 app:gunicorn_app
