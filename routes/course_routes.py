@@ -374,3 +374,19 @@ def is_enrolled_in_course():
     finally:
         cursor.close()
         conn.close()
+
+
+@courseRoutes.route("/getEnrolledCourses", methods=["POST"])
+def get_enrolled_courses():
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        query = "select tbl1.course_id, coursename, type, credits from (select * from courseEnrollment where student_id=%s) tbl1 inner join (select * from course ) tbl2 on tbl1.course_id = tbl2.course_id;"
+        cursor.execute(query, (request.json['student_id']))
+        rows = cursor.fetchall()
+        return jsonify(rows)
+    except Exception as e:
+        return jsonify("Error: " + str(e)), 500
+    finally:
+        cursor.close()
+        conn.close()
