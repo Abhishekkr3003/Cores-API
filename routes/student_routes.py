@@ -15,7 +15,6 @@ def list_students():
         query = "SELECT * FROM student"
         cursor.execute(query)
         rows = cursor.fetchall()
-        # print(rows[0]["userId"])
         response = jsonify(rows)
         response.status_code = 200
 
@@ -169,7 +168,7 @@ def delete_student():
         query = "delete from student where userid=%s;"
         cursor.execute(query, (request.json['userId']))
         conn.commit()
-        return "success"
+        return jsonify("success")
     except Exception as e:
         return jsonify("Error: " + str(e)), 500
     finally:
@@ -186,7 +185,7 @@ def update():
         cursor.execute(query, (
             request.json['name'], request.json['joining_year'], request.json['Branch'], request.json['userId']))
         conn.commit()
-        return "success"
+        return jsonify("success")
     except Exception as e:
         return jsonify("Error: " + str(e)), 500
     finally:
@@ -202,7 +201,7 @@ def student_list_by_branch():
         query = "select * from student where branch=%s"
         cursor.execute(query, (request.json['Branch']))
         rows = cursor.fetchall()
-        return rows
+        return jsonify(rows)
     except Exception as e:
         return jsonify("Error: " + str(e)), 500
     finally:
@@ -218,7 +217,7 @@ def student_list_by_joining_year():
         query = "select * from student where joining_year=%s"
         cursor.execute(query, (request.json['joining_year']))
         rows = cursor.fetchall()
-        return rows
+        return jsonify(rows)
     except Exception as e:
         return jsonify("Error: " + str(e)), 500
     finally:
